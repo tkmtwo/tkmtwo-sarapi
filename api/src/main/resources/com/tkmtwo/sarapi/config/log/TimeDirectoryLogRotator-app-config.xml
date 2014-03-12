@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/util    http://www.springframework.org/schema/util/spring-util.xsd">
+  
+  
+  <!--
+  ******************************************************************************
+  ******************************************************************************
+  CONFIGURATION
+  ******************************************************************************
+  ******************************************************************************
+  -->
+  <context:property-placeholder properties-ref="logRotationProperties" />
+  <bean id="logRotationProperties"
+        class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="properties">
+      <props>
+        <prop key="logrot.ars.host">localhost</prop>
+        <prop key="logrot.ars.port">1803</prop>
+        <prop key="logrot.ars.uname">itsm.app</prop>
+        <prop key="logrot.ars.passwd">itsm.app</prop>
+        <prop key="logrot.root.directory">D:/arslog</prop>
+        <!-- <prop key="logrot.root.directory.mapped">X:/arslog</prop> -->
+        <prop key="logrot.root.directory.mapped"></prop>
+      </props>
+    </property>
+  </bean>
+  
+  <import resource="classpath:com/tkmtwo/sarapi/config/log/log-configurations.xml" />
+  
+  <util:list id="arsContexts">
+    <bean class="com.tkmtwo.sarapi.arsys.core.ArsContextImpl">
+      <property name="hostName" value="${logrot.ars.host}" />
+      <property name="hostPort" value="${logrot.ars.port}" />
+    </bean>
+  </util:list>
+
+  <!--
+      An ArsUserSource for administative privs.
+  -->
+  <bean id="arsAdminSource"
+        class="com.tkmtwo.sarapi.arsys.core.ArsUserSourceImpl">
+    <property name="arsContexts" ref="arsContexts" />
+    <property name="userName" value="${logrot.ars.uname}" />
+    <property name="userPassword" value="${logrot.ars.passwd}" />
+  </bean>
+  
+  <!--
+      An administive template.
+  -->
+  <bean id="arsAdminTemplate" class="com.tkmtwo.sarapi.arsys.core.ArsTemplate">
+    <property name="arsUserSource">
+      <ref local="arsAdminSource" />
+    </property>
+  </bean>
+
+
+  
+  <!--
+      Need to be able to read all the schemas, so we use
+      the administive template here.
+  -->
+  <bean id="arsSchemaHelper" class="com.tkmtwo.sarapi.arsys.core.InMemoryArsSchemaHelper">
+    <property name="arsTemplate">
+      <ref local="arsAdminTemplate" />
+    </property>
+  </bean>
+
+
+
+
+  <bean id="configurationArdbcDao" class="com.tkmtwo.sarapi.config.sarapi.SarapiConfigurationArdbcDao">
+    <property name="arsUserSource">
+      <ref local="arsAdminSource" />
+    </property>
+    <property name="arsSchemaHelper">
+      <ref local="arsSchemaHelper" />
+    </property>
+    <property name="replacingValues" value="true" />
+    <property name="replacementNames">
+      <util:list>
+        <value>Server-Name</value>
+      </util:list>
+    </property>
+  </bean>
+
+  <bean id="logRotator"
+        class="com.tkmtwo.sarapi.config.log.TimeDirectoryLogRotator">
+    <property name="configurationArdbcDao"><ref local="configurationArdbcDao" /></property>
+    <property name="logConfiguration"><ref bean="arsLogStandard" /></property>
+    <property name="rootDirectory" value="${logrot.root.directory}" />
+    <property name="rootDirectoryMapped" value="${logrot.root.directory.mapped}" />
+  </bean>
+  
+</beans>
+

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+  
+
+
+  <util:set id="arsConverters">
+
+    <bean class="com.tkmtwo.sarapi.convert.IntegerToValueConverter" />
+    <bean class="com.tkmtwo.sarapi.convert.ValueToIntegerConverter" />
+
+    <bean class="com.tkmtwo.sarapi.convert.DoubleToValueConverter" />
+    <bean class="com.tkmtwo.sarapi.convert.ValueToDoubleConverter" />
+
+    <bean class="com.tkmtwo.sarapi.convert.StringToValueConverter" />
+    <bean class="com.tkmtwo.sarapi.convert.ValueToStringConverter" />
+
+    <bean class="com.tkmtwo.sarapi.convert.DiaryListValueToValueConverter" />
+    <bean class="com.tkmtwo.sarapi.convert.ValueToDiaryListValueConverter" />
+
+    <bean class="com.tkmtwo.sarapi.convert.TimestampToValueConverter" />
+    <bean class="com.tkmtwo.sarapi.convert.ValueToTimestampConverter" />
+
+    <bean class="com.tkmtwo.sarapi.convert.DateTimeToValueConverter" />
+    <bean class="com.tkmtwo.sarapi.convert.ValueToDateTimeConverter" />
+
+    <bean class="com.tkmtwo.sarapi.convert.BigDecimalToValueConverter" />
+    <bean class="com.tkmtwo.sarapi.convert.ValueToBigDecimalConverter" />
+
+    <bean class="com.tkmtwo.sarapi.convert.CurrencyValueToValueConverter" />
+    <bean class="com.tkmtwo.sarapi.convert.ValueToCurrencyValueConverter" />
+
+    <bean class="com.tkmtwo.sarapi.convert.DateInfoToValueConverter" />
+    <bean class="com.tkmtwo.sarapi.convert.ValueToDateInfoConverter" />
+
+    <bean class="com.tkmtwo.sarapi.convert.LocalDateToValueConverter" />
+    <bean class="com.tkmtwo.sarapi.convert.ValueToLocalDateConverter" />
+
+    <bean class="com.tkmtwo.sarapi.convert.TimeToValueConverter" />
+    <bean class="com.tkmtwo.sarapi.convert.ValueToTimeConverter" />
+
+    <bean class="com.tkmtwo.sarapi.convert.LocalTimeToValueConverter" />
+    <bean class="com.tkmtwo.sarapi.convert.ValueToLocalTimeConverter" />
+
+    <bean class="com.tkmtwo.sarapi.convert.WallClockToValueConverter" />
+    <bean class="com.tkmtwo.sarapi.convert.ValueToWallClockConverter" />
+
+    <bean class="com.tkmtwo.sarapi.convert.AttachmentValueToValueConverter" />
+    <bean class="com.tkmtwo.sarapi.convert.ValueToAttachmentValueConverter" />
+
+  </util:set>
+
+</beans>
+

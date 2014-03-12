@@ -1,0 +1,11 @@
+
+subprojects {
+  
+  repositories {
+    mavenCentral()
+  }
+  
+  group = 'com.tkmtwo'
+  version = '0.1.0'
+  
+}

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+  
+  
+  <!--
+  <bean id="standardLogConfiguration" class="com.tkmtwo.sarapi.config.log.LogConfiguration">
+    <property name="serverLogSettings">
+      <util:list>
+        <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+              c:slf="SQL"
+              c:s="file:arsql-arapi.log" />
+        <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+              c:slf="API"
+              c:s="file:arsql-arapi.log" />
+        <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+              c:slf="FILTER" />
+        <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+              c:slf="PLUGIN" />
+      </util:list>
+    </property>
+    
+  </bean>
+  -->
+  
+  <!--
+  <util:map id="arsLogConfigurationMap"
+            map-class="java.util.HashMap">
+    <entry key="STANDARD">
+      <bean class="com.tkmtwo.sarapi.config.log.LogConfiguration">
+        <property name="serverLogSettings">
+          <util:list>
+            <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+                  c:slf="SQL"
+                  c:s="file:arsql-arapi.log" />
+            <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+                  c:slf="API"
+                  c:s="file:arsql-arapi.log" />
+            <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+                  c:slf="FILTER" />
+            <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+                  c:slf="PLUGIN" />
+          </util:list>
+        </property>
+      </bean>
+    </entry>
+
+    <entry key="OFF">
+      <bean class="com.tkmtwo.sarapi.config.log.LogConfiguration">
+        <property name="serverLogSettings">
+          <util:list>
+            <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+                  c:slf="SQL"
+                  c:s="file:arsql-arapi.log" />
+            <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+                  c:slf="API"
+                  c:s="file:arsql-arapi.log" />
+            <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+                  c:slf="FILTER" />
+            <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+                  c:slf="PLUGIN" />
+          </util:list>
+        </property>
+      </bean>
+    </entry>
+
+  </util:map>
+  -->
+
+  <bean id="arsLogStandard"
+        class="com.tkmtwo.sarapi.config.log.LogConfiguration">
+    <property name="serverLogSettings">
+      <util:list>
+
+
+        <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+              c:slf="SQL"
+              c:s="file:arsql-arapi.log" />
+        <!--
+        <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+              c:slf="FILTER"
+              c:s="file:arfilter.log" />
+        <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+              c:slf="USER"
+              c:s="file:aruser.log" />
+        <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+              c:slf="ESCALATION"
+              c:s="file:arescl.log" />
+        -->
+        <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+              c:slf="API"
+              c:s="file:arsql-arapi.log" />
+        <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+              c:slf="THREAD"
+              c:s="file:arthread.log" />
+        <!--
+        <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+              c:slf="ALERT"
+              c:s="file:aralert.log" />
+        <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+              c:slf="SERVGROUP"
+              c:s="file:arservgroup.log" />
+        <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+              c:slf="FTINDEXER"
+              c:s="file:arftindexer.log" />
+        -->
+        <bean class="com.tkmtwo.sarapi.config.log.ServerLogSetting"
+              c:slf="PLUGIN"
+              c:s="file:arplugin.log" />
+      </util:list>
+    </property>
+  </bean>
+  
+  <bean id="arsLogOff"
+        class="com.tkmtwo.sarapi.config.log.LogConfiguration">
+  </bean>
+  
+  
+  
+</beans>
+

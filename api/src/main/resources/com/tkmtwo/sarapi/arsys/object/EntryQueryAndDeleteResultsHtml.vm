@@ -1,0 +1,45 @@
+
+<html>
+<body>
+
+<table border="1">
+  <tr>
+    <th>Time</th>
+    <td>${timeStamp}</td>
+  </tr>
+
+  <tr>
+    <th>EntryQuery</th>
+    <td>$entryQueryAndDelete.getEntryQuery()</td>
+  </tr>
+
+  <tr>
+    <th>EntryDelete</th>
+    <td>$entryQueryAndDelete.getEntryDelete()</td>
+  </tr>
+
+</table>
+
+
+<table border="1">
+  <tr>
+    <th>Result</th>
+    <th>Entry ID</th>
+    <th>Entry</th>
+    <th>Exception</th>
+  </tr>
+
+
+#foreach($entryResult in $entryResults)
+  <tr>
+    <td>$entryResult.getResult()</td>
+    <td>$entryResult.getEntry().getEntryId()</td>
+    <td>$entryResult.getEntry()</td>
+    <td>$!entryResult.getException().getMessage()</td>
+  </tr>
+#end
+
+</table>
+
+</body>
+</html>
