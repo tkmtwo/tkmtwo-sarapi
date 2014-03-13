@@ -90,21 +90,22 @@ public class MappingQuery<T>
   
   
   ///////////////////////
+  ///// Any number...
   ///////////////////////
   public List<T> getObjects()
     throws DataAccessException {
-
+    
     List<Value> l = ImmutableList.of();
     return getObjects(l);
   }
-
-
+  
+  
   //
   // Using positional values
   //  
   public List<T> getObjects(List<Value> values)
     throws DataAccessException {
-
+    
     return getObjects(values,
                       Constants.AR_START_WITH_FIRST_ENTRY,
                       Constants.AR_NO_MAX_LIST_RETRIEVE,
@@ -117,7 +118,7 @@ public class MappingQuery<T>
                             boolean useLocale,
                             OutputInteger numMatches)
     throws DataAccessException {
-
+    
     return getObjects(getQualifierInfo(values),
                       firstRetrieve,
                       maxRetrieve,
@@ -131,7 +132,7 @@ public class MappingQuery<T>
   //
   public List<T> getObjects(Map<String, Value> values)
     throws DataAccessException {
-
+    
     return getObjects(values,
                       Constants.AR_START_WITH_FIRST_ENTRY,
                       Constants.AR_NO_MAX_LIST_RETRIEVE,
@@ -144,7 +145,7 @@ public class MappingQuery<T>
                             boolean useLocale,
                             OutputInteger numMatches)
     throws DataAccessException {
-
+    
     return getObjects(getQualifierInfo(values),
                       firstRetrieve,
                       maxRetrieve,
@@ -152,7 +153,7 @@ public class MappingQuery<T>
                       numMatches);
   }
   
-
+  
   
   
   
@@ -184,12 +185,233 @@ public class MappingQuery<T>
     return os;
   }
   
-
-
-
-
-
-
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  ///////////////////////
+  ///// Exactly One...
+  ///////////////////////
+  public T getObject()
+    throws DataAccessException {
+    
+    List<Value> l = ImmutableList.of();
+    return getObject(l);
+  }
+  
+  
+  //
+  // Using positional values
+  //  
+  public T getObject(List<Value> values)
+    throws DataAccessException {
+    
+    return getObject(values,
+                     Constants.AR_START_WITH_FIRST_ENTRY,
+                     Constants.AR_NO_MAX_LIST_RETRIEVE,
+                     false,
+                     null);
+  }
+  public T getObject(List<Value> values,
+                     int firstRetrieve,
+                     int maxRetrieve,
+                     boolean useLocale,
+                     OutputInteger numMatches)
+    throws DataAccessException {
+    
+    return getObject(getQualifierInfo(values),
+                     firstRetrieve,
+                     maxRetrieve,
+                     useLocale,
+                     numMatches);
+  }
+  
+  
+  //
+  // Using named params in a Map<String, Value>
+  //
+  public T getObject(Map<String, Value> values)
+    throws DataAccessException {
+    
+    return getObject(values,
+                     Constants.AR_START_WITH_FIRST_ENTRY,
+                     Constants.AR_NO_MAX_LIST_RETRIEVE,
+                     false,
+                     null);
+  }
+  public T getObject(Map<String, Value> values,
+                     int firstRetrieve,
+                     int maxRetrieve,
+                     boolean useLocale,
+                     OutputInteger numMatches)
+    throws DataAccessException {
+    
+    return getObject(getQualifierInfo(values),
+                     firstRetrieve,
+                     maxRetrieve,
+                     useLocale,
+                     numMatches);
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  public T getObject(QualifierInfo qi,
+                     int firstRetrieve,
+                     int maxRetrieve,
+                     boolean useLocale,
+                     OutputInteger numMatches)
+    throws DataAccessException {
+    
+    Entry e = getTemplate().getListEntryObject(getFormName(),
+                                               qi,
+                                               firstRetrieve,
+                                               maxRetrieve,
+                                               getSortInfos(),
+                                               getFieldIds(),
+                                               useLocale,
+                                               numMatches);
+    return getEntryMapper().mapEntry(e);
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  ///////////////////////
+  ///// One or null...
+  ///////////////////////
+  public T getObjectNullable()
+    throws DataAccessException {
+    
+    List<Value> l = ImmutableList.of();
+    return getObjectNullable(l);
+  }
+  
+  
+  //
+  // Using positional values
+  //  
+  public T getObjectNullable(List<Value> values)
+    throws DataAccessException {
+    
+    return getObjectNullable(values,
+                             Constants.AR_START_WITH_FIRST_ENTRY,
+                             Constants.AR_NO_MAX_LIST_RETRIEVE,
+                             false,
+                             null);
+  }
+  public T getObjectNullable(List<Value> values,
+                             int firstRetrieve,
+                             int maxRetrieve,
+                             boolean useLocale,
+                             OutputInteger numMatches)
+    throws DataAccessException {
+    
+    return getObjectNullable(getQualifierInfo(values),
+                             firstRetrieve,
+                             maxRetrieve,
+                             useLocale,
+                             numMatches);
+  }
+  
+  
+  //
+  // Using named params in a Map<String, Value>
+  //
+  public T getObjectNullable(Map<String, Value> values)
+    throws DataAccessException {
+    
+    return getObjectNullable(values,
+                             Constants.AR_START_WITH_FIRST_ENTRY,
+                             Constants.AR_NO_MAX_LIST_RETRIEVE,
+                             false,
+                             null);
+  }
+  public T getObjectNullable(Map<String, Value> values,
+                             int firstRetrieve,
+                             int maxRetrieve,
+                             boolean useLocale,
+                             OutputInteger numMatches)
+    throws DataAccessException {
+    
+    return getObjectNullable(getQualifierInfo(values),
+                             firstRetrieve,
+                             maxRetrieve,
+                             useLocale,
+                             numMatches);
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  public T getObjectNullable(QualifierInfo qi,
+                             int firstRetrieve,
+                             int maxRetrieve,
+                             boolean useLocale,
+                             OutputInteger numMatches)
+    throws DataAccessException {
+    
+    Entry e = getTemplate().getListEntryObjectNullable(getFormName(),
+                                                       qi,
+                                                       firstRetrieve,
+                                                       maxRetrieve,
+                                                       getSortInfos(),
+                                                       getFieldIds(),
+                                                       useLocale,
+                                                       numMatches);
+    return getEntryMapper().mapEntry(e);
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
   /*
   ///
   /// one exactly

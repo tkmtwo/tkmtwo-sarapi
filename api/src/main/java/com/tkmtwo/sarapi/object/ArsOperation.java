@@ -71,7 +71,7 @@ public abstract class ArsOperation
   public void afterPropertiesSet() {
     checkNotNull(getTemplate(), "Need an ArsTemplate.");
     if (getConversionService() == null) {
-      logger.warn("No ConversionService found.  Creating a new ArsConversionService.");
+      logger.info("No ConversionService found.  Creating a new ArsConversionService.");
       setConversionService(new ArsConversionService());
     }
     //compile();

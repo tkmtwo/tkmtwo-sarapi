@@ -50,7 +50,7 @@ public class MappingCreateEntry<T>
   public void afterPropertiesSet() {
     super.afterPropertiesSet();
     if (getEntryHandlers() == null) {
-      logger.warn("No EntryHandlers found, adding FieldIdRemovingEntryHandler.CORE_CREATE_ENTRY");
+      logger.info("No EntryHandlers found, adding FieldIdRemovingEntryHandler.CORE_CREATE_ENTRY");
       setEntryHandlers(ImmutableList.of((EntryHandler) FieldIdRemovingEntryHandler.CORE_CREATE_ENTRY));
     }
   }

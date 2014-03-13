@@ -172,7 +172,7 @@ public abstract class AbstractFormDao<T>
     checkNotNull(getTemplate(), "Need an ArsTemplate");
     
     if (getConversionService() == null) {
-      logger.warn("No ConversionService found.  Creating a new ArsConversionService.");
+      logger.info("No ConversionService found.  Creating a new ArsConversionService.");
       conversionService = new ArsConversionService();
     }
     
@@ -180,7 +180,7 @@ public abstract class AbstractFormDao<T>
     checkNotNull(getFormName(), "Need a form name");
 
     if (getEntryMapper() == null) {
-      logger.warn("No EntryMapper, creating new with newEntryMapper()");
+      logger.info("No EntryMapper, creating new with newEntryMapper()");
       setEntryMapper(newEntryMapper(getTemplate(), getConversionService(),
                                     getSchemaHelper(), getFormName()));
       logger.info("Created EntryMapper<T> {}", getEntryMapper().getClass().getName());

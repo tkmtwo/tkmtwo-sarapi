@@ -50,7 +50,7 @@ public abstract class MappingOperation
     checkNotNull(getTemplate(), "Need an ArsTemplate");
     
     if (getConversionService() == null) {
-      logger.warn("No ConversionService found.  Creating a new ArsConversionService.");
+      logger.info("No ConversionService found.  Creating a new ArsConversionService.");
       conversionService = new ArsConversionService();
     }
     

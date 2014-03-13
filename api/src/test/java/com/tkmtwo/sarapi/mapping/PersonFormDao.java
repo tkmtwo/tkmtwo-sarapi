@@ -60,6 +60,14 @@ public final class PersonFormDao
     return personByFirstName.getObjects(ImmutableMap.of("firstName",
                                                         ArsDataType.CHAR.getArValue(firstNameLike)));
   }
+  public Person personByFirstNameLike(String firstNameLike) {
+    return personByFirstName.getObject(ImmutableMap.of("firstName",
+                                                       ArsDataType.CHAR.getArValue(firstNameLike)));
+  }
+  public Person personByFirstNameLikeNullable(String firstNameLike) {
+    return personByFirstName.getObjectNullable(ImmutableMap.of("firstName",
+                                                               ArsDataType.CHAR.getArValue(firstNameLike)));
+  }
 
   
   
