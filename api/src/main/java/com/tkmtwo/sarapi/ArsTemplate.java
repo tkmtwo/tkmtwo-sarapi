@@ -342,20 +342,19 @@ public class ArsTemplate
                                          final boolean useLocale,
                                          final OutputInteger numMatches)
     throws DataAccessException {
-
+    
     List<Entry> result =
       execute(new ARServerUserCallback<List<Entry>>() {
-          public List<Entry> doInARServerUser(ARServerUser arsu)
-            throws ARException {
+          public List<Entry> doInARServerUser(ARServerUser arsu) throws ARException {
             List<Entry> entries =
-              arsu.getListEntryObjects(formName,
-                                       qualifierInfo,
-                                       firstRetrieve,
-                                       maxRetrieve,
-                                       sortList,
-                                       fieldIds,
-                                       useLocale,
-                                       numMatches);
+            arsu.getListEntryObjects(formName,
+                                     qualifierInfo,
+                                     firstRetrieve,
+                                     maxRetrieve,
+                                     sortList,
+                                     fieldIds,
+                                     useLocale,
+                                     numMatches);
             return entries;
           }
         });

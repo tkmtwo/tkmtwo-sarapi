@@ -54,6 +54,7 @@ public final class MappingSetTest
       p.setLastName(p.getLastName() + "-set");
       p.setAge(10 + i);
       p.setGender("Female");
+      p.setMobilePhone(new PhoneNumber(null, "1", "333", "333-3333"));
       personSet.setEntry(p);
     }
   }

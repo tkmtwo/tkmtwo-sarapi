@@ -93,7 +93,7 @@ public final class EntryUtil {
       sb
         .append(fid.toString())
         .append("=")
-        .append((val != null) ? val.toString() : "")
+        .append((val != null) ? val.toString() : "javanull")
         .append(" ");
     }
     sb.append("]");
@@ -115,7 +115,7 @@ public final class EntryUtil {
       sb
         .append(arsSchemaHelper.getFieldName(formName, fid))
         .append("=")
-        .append(val.toString())
+        .append((val != null) ? val.toString() : "javanull")
         .append(" ");
     }
     sb.append("]");

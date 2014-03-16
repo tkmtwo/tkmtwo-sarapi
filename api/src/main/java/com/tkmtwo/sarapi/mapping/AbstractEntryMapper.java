@@ -19,6 +19,7 @@ package com.tkmtwo.sarapi.mapping;
 
 import com.bmc.arsys.api.Entry;
 import com.bmc.arsys.api.Value;
+import com.tkmtwo.sarapi.ArsDataType;
 import com.tkmtwo.sarapi.ArsField;
 import com.tkmtwo.sarapi.InvalidEntryAccessException;
 import java.util.Map;
@@ -36,16 +37,13 @@ public abstract class AbstractEntryMapper<T>
   extends FormMappingOperation
   implements EntryMapper<T> {
   
-  
   public abstract Entry mapObject(T source)
     throws InvalidEntryAccessException;
   public abstract T mapEntry(Entry entry)
     throws InvalidEntryAccessException;
 
   public abstract Set<String> getMappedFieldNames();
-  
   protected abstract Map<String, String> propertyToFieldNames();
-  protected abstract Map<String, String> propertyToEnumFieldNames();
   
 
   protected BeanWrapper newBeanWrapper(Object target) {
@@ -60,100 +58,89 @@ public abstract class AbstractEntryMapper<T>
   protected ArsField getField(String fieldName) {
     return getSchemaHelper().getField(getFormName(), fieldName);
   }
-  
+  protected Integer getFieldId(String fieldName) {
+    return getField(fieldName).getId();
+  }
+
+
   protected void setPropertyValues(BeanWrapper bw,
                                    Entry entry,
                                    Map<String, String> m) {
     for (Map.Entry<String, String> me : m.entrySet()) {
-      bw.setPropertyValue(me.getKey(),
-                          entry.get(getSchemaHelper().getField(getFormName(), me.getValue()).getId()));
+      String propName = me.getKey();
+      String fieldName = me.getValue();
+      
+      ArsField field = getField(fieldName);
+      Value value = entry.get(field.getId());
+      Class propClass = bw.getPropertyType(propName);
+      
+      if (field.getDataType().equals(ArsDataType.ENUM)) {
+        
+        if (propClass.equals(String.class)) {
+          logger.trace("Performing num2name swap for field {}", field.getName());
+          Integer enumNumber = getConversionService().convert(value, Integer.class);
+          String enumName = null;
+          
+          if (enumNumber == null) {
+            bw.setPropertyValue(propName, new Value());
+          } else {
+            enumName = getSchemaHelper().getEnumName(getFormName(), field.getName(), enumNumber);
+            bw.setPropertyValue(propName, enumName);
+          }
+          logger.trace("Performed num2name swap for field '{}' number '{}' to name '{}'",
+                       field.getName(), enumNumber, enumName);
+          continue;
+        }
+        
+      }
+      
+      bw.setPropertyValue(propName, value);
     }
   }
 
-
-  protected void setPropertyEnumValues(BeanWrapper bw,
-                                       Entry entry,
-                                       Map<String, String> m) {
-    for (Map.Entry<String, String> me : m.entrySet()) {
-      ArsField af = getField(me.getValue());
-      Integer enumNumber = getConversionService().convert(entry.get(af.getId()), Integer.class);
-
-      bw.setPropertyValue(me.getKey(),
-                          getSchemaHelper().getEnumName(getFormName(), me.getValue(), enumNumber));
-    }
-  }
-  
-
-  /*
-  
-  protected void put(Entry entry,
-                     String fieldName,
-                     Object fieldValue) {
-    ArsField af = getSchemaHelper().getField(getFormName(), fieldName);
-    entry.put(af.getId(),
-              af.getDataType().convert(fieldValue));
-  }
-  
-
-    
-
-  */
-  
-  
   protected void setEntryValues(BeanWrapper bw,
                                 Entry entry,
                                 Map<String, String> m) {
     for (Map.Entry<String, String> me : m.entrySet()) {
-      entry.put(getSchemaHelper().getField(getFormName(), me.getValue()).getId(),
-                bw.getConversionService().convert(bw.getPropertyValue(me.getKey()),
-                                                  Value.class));
-    }
-  }
-
-  protected void setEntryEnumValues(BeanWrapper bw,
-                                    Entry entry,
-                                    Map<String, String> m) {
-    for (Map.Entry<String, String> me : m.entrySet()) {
-
-      Integer fieldId = getSchemaHelper().getField(getFormName(), me.getValue()).getId();
-      String enumName = bw.getConversionService().convert(bw.getPropertyValue(me.getKey()),
-                                                          String.class);
-      if (enumName == null) {
-        entry.put(fieldId, new Value());
-      } else {
-        entry.put(fieldId,
-                  new Value(getSchemaHelper().getEnumNumber(getFormName(), me.getValue(), enumName)));
-      }
-
-      /***      
-      Integer enumNumber =
-        getSchemaHelper()
-        .getEnumNumber(getFormName(), me.getValue(),
-                       bw.getConversionService().convert(bw.getPropertyValue(me.getKey()),
-                                                         String.class));
-      */
-
-      /*      
-      entry.put(getSchemaHelper().getField(getFormName(), me.getValue()).getId(),
-                bw.getConversionService().convert(bw.getPropertyValue(me.getKey()),
-                                                  Value.class));
-      */
-
-      /***
-      entry.put(getSchemaHelper().getField(getFormName(), me.getValue()).getId(),
-                new Value(enumNumber));
-      */
+      String propName = me.getKey();
+      String fieldName = me.getValue();
       
+      ArsField field = getField(fieldName);
+      Value value = bw.getConversionService().convert(bw.getPropertyValue(propName),
+                                                      Value.class);
+      Class propClass = bw.getPropertyType(propName);
+
+      if (field.getDataType().equals(ArsDataType.ENUM)) {
+        
+        if (propClass.equals(String.class)) {
+          logger.trace("Performing name2num swap for field {}", field.getName());
+          Integer enumNumber = null;
+          String enumName = getConversionService().convert(value, String.class);
+          
+          if (enumName == null) {
+            entry.put(field.getId(), new Value());
+          } else {
+            enumNumber = getSchemaHelper().getEnumNumber(getFormName(), field.getName(), enumName);
+            entry.put(field.getId(), new Value(enumNumber));
+          }
+          logger.trace("Performed name2num swap for field '{}' name '{}' to number '{}'",
+                       field.getName(), enumName, enumNumber);
+          continue;
+        }
+        
+      }
+      
+      entry.put(field.getId(), (value == null ? new Value() : value));
     }
+    
   }
-
-
+  
+    
+  
                         
   
   public void afterPropertiesSet() {
     super.afterPropertiesSet();
   }
-
-
-
+  
 }

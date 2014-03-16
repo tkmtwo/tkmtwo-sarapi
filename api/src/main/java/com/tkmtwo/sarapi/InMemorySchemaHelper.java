@@ -300,9 +300,13 @@ public class InMemorySchemaHelper
                             Integer fieldId,
                             Integer enumNumber)
     throws DataAccessException {
+    
+    ArsField arsField = getField(formName, fieldId);
+    if (enumNumber == null) {
+      throw new InvalidFieldAccessException(arsField.getArField(),
+                                            "Can not find enum name for null enum number");
+    }
 
-    //checkNotNull(enumNumber, "Enum number is null");
-    if (enumNumber == null) { return null; }
     Map<Integer, String> enums = getEnums(formName, fieldId);
 
     String enumName = enums.get(enumNumber);
@@ -319,18 +323,8 @@ public class InMemorySchemaHelper
                             String fieldName,
                             Integer enumNumber)
     throws DataAccessException {
-
-    //checkNotNull(enumNumber, "Enum number is null");
-    if (enumNumber == null) { return null; }
-    Map<Integer, String> enums = getEnums(formName, fieldName);
-
-    String enumName = enums.get(enumNumber);
-    if (enumName == null) {
-      throw new InvalidDataAccessResourceUsageException(String.format("Enum name for %s.%s.%s not found",
-                                                                      formName, fieldName, enumNumber.toString()));
-      
-    }
-    return enumName;
+    
+    return getEnumName(formName, getField(formName, fieldName).getId(), enumNumber);
   }
 
 
@@ -343,11 +337,6 @@ public class InMemorySchemaHelper
     Map<Integer, String> enums = getEnums(formName, fieldName);
     
     for (Map.Entry<Integer, String> mapEntry : enums.entrySet()) {
-      /*
-      if (StringUtils.equals(enumName, mapEntry.getValue())) {
-        return mapEntry.getKey();
-      }
-      */
       if (Objects.equal(enumName, mapEntry.getValue())) {
         return mapEntry.getKey();
       }
@@ -366,11 +355,6 @@ public class InMemorySchemaHelper
     Map<Integer, String> enums = getEnums(formName, fieldId);
     
     for (Map.Entry<Integer, String> mapEntry : enums.entrySet()) {
-      /*
-      if (StringUtils.equals(enumName, mapEntry.getValue())) {
-        return mapEntry.getKey();
-      }
-      */
       if (Objects.equal(enumName, mapEntry.getValue())) {
         return mapEntry.getKey();
       }

@@ -17,6 +17,8 @@
  */
 package com.tkmtwo.sarapi.convert;
 
+import com.bmc.arsys.api.Value;
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConverterRegistry;
 import org.springframework.core.convert.support.GenericConversionService;
 
@@ -76,6 +78,15 @@ public class ArsConversionService
     converterRegistry.addConverter(new AttachmentValueToValueConverter());
     converterRegistry.addConverter(new ValueToAttachmentValueConverter());
   }
+  
+
+  protected Object convertNullSource(TypeDescriptor sourceType, TypeDescriptor targetType) {
+    if (targetType.getType().equals(Value.class)) {
+      return new Value();
+    }
+    return null;
+  }
+
 
 }
 

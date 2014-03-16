@@ -50,14 +50,15 @@ public final class MappingMergeTest
       p.setLastName("MergeLastName" + String.valueOf(i));
       p.setGender("Male");
       p.setAge(i);
-      String newId = personCreate.createEntry(p);
 
+      String newId = personCreate.createEntry(p);
       Person np = personGet.getEntry(newId);
       
       np.setFirstName(np.getFirstName() + "-merged");
       np.setLastName(np.getLastName() + "-merged");
       np.setAge(20 + i);
       np.setGender("Female");
+      np.setWorkPhone(new PhoneNumber(null, "1", "222", "222-2222"));
       personMerge.mergeEntry(np);
     }
   }

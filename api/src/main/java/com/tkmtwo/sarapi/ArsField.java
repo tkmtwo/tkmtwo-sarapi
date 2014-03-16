@@ -83,11 +83,6 @@ public class ArsField
   private void setId(Integer i) {
     checkArgument((checkNotNull(i, "Integer is null.").intValue() > 0),
                   "Field id must be a positive integer.");
-    /*
-    if (i == null || i.intValue() < 1) {
-      throw new IllegalArgumentException("Field id must be a positive integer.");
-    }
-    */
     id = i;
   }
   
@@ -99,22 +94,9 @@ public class ArsField
   public ArsDataType getDataType() { return dataType; }
   private void setDataType(ArsDataType adt) {
     dataType = checkNotNull(adt, "Data type may not be null.");
-    /*
-    if (adt == null) {
-      throw new IllegalArgumentException("Data type may not be null.");
-    }
-    dataType = adt;
-    */
   }
   private void setDataType(Integer i) {
     setDataType(ArsDataType.valueOfArInt((checkNotNull(i, "Data type may not be null.").intValue())));
-    /*
-    if (i == null) {
-      throw new IllegalArgumentException("Data type may not be null.");
-    }
-
-    setDataType(ArsDataType.valueOfArInt(i.intValue()));
-    */
   }
 
 

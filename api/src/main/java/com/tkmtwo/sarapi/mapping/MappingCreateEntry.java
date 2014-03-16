@@ -19,6 +19,7 @@ package com.tkmtwo.sarapi.mapping;
 
 import com.bmc.arsys.api.Entry;
 import com.google.common.collect.ImmutableList;
+import com.tkmtwo.sarapi.support.EntryUtil;
 import org.springframework.dao.DataAccessException;
 
 
@@ -34,7 +35,8 @@ public class MappingCreateEntry<T>
     for (EntryHandler eh : getEntryHandlers()) {
       eh.handleEntry(entry);
     }
-    
+
+    logger.trace("Creating entry for {}", EntryUtil.entryToString(entry, getSchemaHelper(), getFormName()));
     String id = getTemplate().createEntry(getFormName(), entry);
     return id;
   }

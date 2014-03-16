@@ -2,6 +2,7 @@ package com.tkmtwo.sarapi.mapping;
 
 
 import com.bmc.arsys.api.Entry;
+import com.bmc.arsys.api.Value;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import java.util.Map;
@@ -16,26 +17,32 @@ public final class PersonMapper
   
   
   private static final Map<String, String> PROPERTY_TO_FIELDNAME = new ImmutableMap.Builder<String, String>()
-    .put("firstName", "First Name")
-    .put("lastName", "Last Name")
-    .put("age", "Age")
     .put("status", "Status")
     .put("createDateTime", "Create Date")
     .put("modifyDateTime", "Modified Date")
+    .put("firstName", "First Name")
+    .put("lastName", "Last Name")
+    .put("age", "Age")
+    .put("gender", "Gender")
+    .put("workPhone.fullNumber", "WorkFullNumber")
+    .put("workPhone.countryCode", "WorkCcNumber")
+    .put("workPhone.areaCode", "WorkAcNumber")
+    .put("workPhone.localNumber", "WorkLocalNumber")
+    .put("mobilePhone.fullNumber", "MobileFullNumber")
+    .put("mobilePhone.countryCode", "MobileCcNumber")
+    .put("mobilePhone.areaCode", "MobileAcNumber")
+    .put("mobilePhone.localNumber", "MobileLocalNumber")
     .build();
   
-  private static final Map<String, String> PROPERTY_TO_ENUMFIELDNAME = new ImmutableMap.Builder<String, String>()
-    .put("gender", "Gender")
-    .build();
+  
+  
   
   private static final Set<String> FIELD_NAMES = new ImmutableSet.Builder<String>()
     .addAll(PROPERTY_TO_FIELDNAME.values())
-    .addAll(PROPERTY_TO_ENUMFIELDNAME.values())
     .build();
   
   
   protected Map<String, String> propertyToFieldNames() { return PROPERTY_TO_FIELDNAME; }
-  protected Map<String, String> propertyToEnumFieldNames() { return PROPERTY_TO_ENUMFIELDNAME; }
   public Set<String> getMappedFieldNames() { return FIELD_NAMES; }
   
   
@@ -58,7 +65,6 @@ public final class PersonMapper
     
     BeanWrapper bw = newBeanWrapper(source);
     setEntryValues(bw, entry, propertyToFieldNames());
-    setEntryEnumValues(bw, entry, propertyToEnumFieldNames());
     
     return entry;
   }
@@ -79,7 +85,6 @@ public final class PersonMapper
     
     BeanWrapper bw = newBeanWrapper(p);
     setPropertyValues(bw, entry, propertyToFieldNames());
-    setPropertyEnumValues(bw, entry, propertyToEnumFieldNames());
     
     return p;
   }

@@ -79,6 +79,7 @@ public class ValuePuttingEntryHandler
     if (getStaticValues() == null || getStaticValues().isEmpty()) { return; }
     
     for (Map.Entry<Integer, Value> me : getCompiledValues().entrySet()) {
+      logger.trace("Applying static value '{}' to field id '{}'", me.getKey(), me.getValue());
       entry.put(me.getKey(), me.getValue());
     }
   }

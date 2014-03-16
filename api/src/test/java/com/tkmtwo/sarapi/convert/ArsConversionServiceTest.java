@@ -28,4 +28,31 @@ public final class ArsConversionServiceTest
     assertEquals(s, cs.convert(new Value("Hello World"), String.class));
 
   }
+  
+  @Test
+  public void testStringToValue() {
+    String s = "Hello World";
+    Value v = new Value("Hello World");
+    
+    assertEquals(s, cs.convert(new Value("Hello World"), String.class));
+  }
+  @Test
+  public void testStringToValueNull() {
+    String s = null;
+    Value v = new Value();
+    
+    Value cv = cs.convert(s, Value.class);
+    if (cv == null) {
+      System.out.println("Value is JavaNULL");
+    }
+
+    if (v == null) {
+      System.out.println("Hell, new Value() isa JavaNULL");
+    } else {
+      System.out.println("Whew, new Value() is a " + v.getClass().toString());
+    }
+
+  }
+  
+
 }
