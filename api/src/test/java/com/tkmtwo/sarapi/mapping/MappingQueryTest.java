@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.bmc.arsys.api.Entry;
+import com.bmc.arsys.api.OutputInteger;
 import com.bmc.arsys.api.Value;
 import java.util.List;
 import java.util.Map;
@@ -53,9 +54,14 @@ public final class MappingQueryTest
 
   @Test
   public void testNoQualWithLimits() {
-    List<Person> ps = personQueryNoQualification.getObjects(1, 10);
+    OutputInteger oi = new OutputInteger(0);
+    System.out.println("OutputInteger is " + String.valueOf(oi));
+
+    List<Person> ps = personQueryNoQualification.getObjects(70, 100, oi);
+    System.out.println("OutputInteger is " + String.valueOf(oi));
+
     assertNotNull(ps);
-    assertTrue(ps.size() <= 10);
+    //assertTrue(ps.size() <= 10);
     System.out.println(String.format("With limits, i see %s records.", String.valueOf(ps.size())));
     for (Person p : ps) {
       System.out.println("  LIMITED: " + p.toString());

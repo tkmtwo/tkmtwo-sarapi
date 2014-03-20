@@ -100,11 +100,11 @@ public class MappingQuery<T>
   }
   
   
-  public List<T> getObjects(int firstRetrieve, int maxRetrieve)
+  public List<T> getObjects(int firstRetrieve, int maxRetrieve, OutputInteger numMatches)
     throws DataAccessException {
     
     List<Value> l = ImmutableList.of();
-    return getObjects(l, firstRetrieve, maxRetrieve, false, null);
+    return getObjects(l, firstRetrieve, maxRetrieve, false, numMatches);
   }
   
   
@@ -118,7 +118,7 @@ public class MappingQuery<T>
                       Constants.AR_START_WITH_FIRST_ENTRY,
                       Constants.AR_NO_MAX_LIST_RETRIEVE,
                       false,
-                      null);
+                      new OutputInteger(0));
   }
   public List<T> getObjects(List<Value> values,
                             int firstRetrieve,
@@ -145,7 +145,7 @@ public class MappingQuery<T>
                       Constants.AR_START_WITH_FIRST_ENTRY,
                       Constants.AR_NO_MAX_LIST_RETRIEVE,
                       false,
-                      null);
+                      new OutputInteger(0));
   }
   public List<T> getObjects(Map<String, Value> values,
                             int firstRetrieve,
@@ -234,7 +234,7 @@ public class MappingQuery<T>
                      Constants.AR_START_WITH_FIRST_ENTRY,
                      Constants.AR_NO_MAX_LIST_RETRIEVE,
                      false,
-                     null);
+                     new OutputInteger(0));
   }
   public T getObject(List<Value> values,
                      int firstRetrieve,
@@ -261,7 +261,7 @@ public class MappingQuery<T>
                      Constants.AR_START_WITH_FIRST_ENTRY,
                      Constants.AR_NO_MAX_LIST_RETRIEVE,
                      false,
-                     null);
+                     new OutputInteger(0));
   }
   public T getObject(Map<String, Value> values,
                      int firstRetrieve,
@@ -342,7 +342,7 @@ public class MappingQuery<T>
                              Constants.AR_START_WITH_FIRST_ENTRY,
                              Constants.AR_NO_MAX_LIST_RETRIEVE,
                              false,
-                             null);
+                             new OutputInteger(0));
   }
   public T getObjectNullable(List<Value> values,
                              int firstRetrieve,
@@ -369,7 +369,7 @@ public class MappingQuery<T>
                              Constants.AR_START_WITH_FIRST_ENTRY,
                              Constants.AR_NO_MAX_LIST_RETRIEVE,
                              false,
-                             null);
+                             new OutputInteger(0));
   }
   public T getObjectNullable(Map<String, Value> values,
                              int firstRetrieve,
