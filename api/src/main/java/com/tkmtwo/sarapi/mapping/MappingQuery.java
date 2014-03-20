@@ -100,6 +100,14 @@ public class MappingQuery<T>
   }
   
   
+  public List<T> getObjects(int firstRetrieve, int maxRetrieve)
+    throws DataAccessException {
+    
+    List<Value> l = ImmutableList.of();
+    return getObjects(l, firstRetrieve, maxRetrieve, false, null);
+  }
+  
+  
   //
   // Using positional values
   //  

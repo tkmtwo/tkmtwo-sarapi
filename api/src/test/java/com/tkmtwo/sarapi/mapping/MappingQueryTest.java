@@ -50,6 +50,19 @@ public final class MappingQueryTest
       System.out.println("I see person: " + p.toString());
     }
   }
+
+  @Test
+  public void testNoQualWithLimits() {
+    List<Person> ps = personQueryNoQualification.getObjects(1, 10);
+    assertNotNull(ps);
+    assertTrue(ps.size() <= 10);
+    System.out.println(String.format("With limits, i see %s records.", String.valueOf(ps.size())));
+    for (Person p : ps) {
+      System.out.println("  LIMITED: " + p.toString());
+    }
+
+
+  }
   
 
   @Test
