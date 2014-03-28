@@ -161,6 +161,31 @@ public abstract class AbstractFormDao<T>
   }
   
 
+  public MappingQuery<String> newStringMappingQuery(String qs,
+                                                    String formName,
+                                                    String fieldName) {
+    InterpolatingQualifierInfoCreator iqic = new InterpolatingQualifierInfoCreator();
+    iqic.setQualifierString(qs);
+    iqic.setTemplate(getTemplate());
+    iqic.setFormName(formName);
+    iqic.afterPropertiesSet();
+    
+    MappingQuery<String> mq = new MappingQuery<String>();
+    mq.setQualifierInfoCreator(iqic);
+    mq.setTemplate(getTemplate());
+    mq.setSchemaHelper(getSchemaHelper());
+    mq.setFormName(formName);
+    mq.setEntryMapper(SingleValueEntryMapper.forString(getTemplate(),
+                                                       getConversionService(),
+                                                       getSchemaHelper(),
+                                                       formName,
+                                                       fieldName));
+    mq.afterPropertiesSet();
+    
+    return mq;
+  }
+  
+
 
   public abstract EntryMapper<T> newEntryMapper(ArsTemplate at,
                                                 ConversionService cs,

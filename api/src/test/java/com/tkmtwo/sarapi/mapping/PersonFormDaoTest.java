@@ -122,6 +122,13 @@ public final class PersonFormDaoTest
     assertNull(person);
   }
   
-  
+  @Test
+  public void testTestFieldsByCharacterField() {
+    List<String> cfs = personDao.testFieldsByCharacterField("AAA");
+    System.out.println("There are " + cfs.size() + " of them");
+    for (String cf : cfs) {
+      System.out.println("I see " + cf);
+    }
+  }
   
 }

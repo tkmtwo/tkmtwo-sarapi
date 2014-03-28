@@ -31,6 +31,7 @@ public final class PersonFormDao
   
   
   MappingQuery<Person> personByFirstName = null;
+  MappingQuery<String> testFieldsByCharacterField = null;
   
   public EntryMapper<Person> newEntryMapper(ArsTemplate at,
                                             ConversionService cs,
@@ -51,11 +52,17 @@ public final class PersonFormDao
     logger.info("PersonFormDao coming up");
     
     personByFirstName = newMappingQuery("'First Name' LIKE ${firstName}");
-
+    testFieldsByCharacterField = newStringMappingQuery("'Character Field' = ${charField}",
+                                                       "SARAPI:TestFields",
+                                                       "Character Field");
+    
     
   }
   
-  
+  public List<String> testFieldsByCharacterField(String charField) {
+    ImmutableMap<String, Value> vs = ImmutableMap.of("charField", ArsDataType.CHAR.getArValue(charField));
+    return testFieldsByCharacterField.getObjects(vs);
+  }
   public List<Person> personsByFirstNameLike(String firstNameLike) {
     return personByFirstName.getObjects(ImmutableMap.of("firstName",
                                                         ArsDataType.CHAR.getArValue(firstNameLike)));
