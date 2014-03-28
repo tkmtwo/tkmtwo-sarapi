@@ -3,6 +3,7 @@ package com.tkmtwo.sarapi.convert;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,16 +43,8 @@ public final class ArsConversionServiceTest
     Value v = new Value();
     
     Value cv = cs.convert(s, Value.class);
-    if (cv == null) {
-      System.out.println("Value is JavaNULL");
-    }
-
-    if (v == null) {
-      System.out.println("Hell, new Value() isa JavaNULL");
-    } else {
-      System.out.println("Whew, new Value() is a " + v.getClass().toString());
-    }
-
+    assertNotNull(cv);
+    assertEquals(new Value(), cv);
   }
   
 
