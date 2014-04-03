@@ -37,6 +37,7 @@ dependencies {
   compile "commons-pool:commons-pool:${commonsPoolVersion}"
 
   compile "org.springframework:spring-jdbc:${springFrameworkVersion}"
+  compile "org.springframework.security:spring-security-core:${springSecurityVersion}"
 
   runtime "ch.qos.logback:logback-classic:${logbackVersion}"
   runtime "ch.qos.logback:logback-core:${logbackVersion}"

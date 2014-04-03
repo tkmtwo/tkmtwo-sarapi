@@ -9,16 +9,29 @@
   
 
   <bean id="arsAdminSource"
-        class="com.tkmtwo.sarapi.ArsUserSource">
+        class="com.tkmtwo.sarapi.BasicArsUserSource">
     <property name="arsContexts" ref="arsContexts" />
     <property name="userName" value="${ars.uname.0}" />
     <property name="userPassword" value="${ars.passwd.0}" />
   </bean>
+  <bean id="arsSecureSource"
+        class="com.tkmtwo.sarapi.security.SecureArsUserSource">
+    <property name="arsUserSource">
+      <ref bean="arsAdminSource" />
+    </property>
+  </bean>
+  
   <bean id="arsAdminTemplate" class="com.tkmtwo.sarapi.ArsTemplate">
     <property name="userSource">
       <ref bean="arsAdminSource" />
     </property>
   </bean>
+  <bean id="arsSecureTemplate" class="com.tkmtwo.sarapi.ArsTemplate">
+    <property name="userSource">
+      <ref bean="arsSecureSource" />
+    </property>
+  </bean>
+  
   <bean id="arsSchemaHelper" class="com.tkmtwo.sarapi.InMemorySchemaHelper">
     <property name="template">
       <ref bean="arsAdminTemplate" />
