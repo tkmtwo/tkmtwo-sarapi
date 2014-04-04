@@ -50,8 +50,8 @@
     <property name="qualifierInfoCreator">
       
       <bean class="com.tkmtwo.sarapi.InterpolatingQualifierInfoCreator">
-        <property name="template">
-          <ref bean="arsAdminTemplate" />
+        <property name="schemaHelper">
+          <ref bean="arsSchemaHelper" />
         </property>
         <property name="formName" value="SARAPI:Person" />
         <property name="qualifierString">
@@ -82,8 +82,8 @@
     <property name="qualifierInfoCreator">
       
       <bean class="com.tkmtwo.sarapi.InterpolatingQualifierInfoCreator">
-        <property name="template">
-          <ref bean="arsAdminTemplate" />
+        <property name="schemaHelper">
+          <ref bean="arsSchemaHelper" />
         </property>
         <property name="formName" value="SARAPI:Person" />
         <property name="qualifierString">

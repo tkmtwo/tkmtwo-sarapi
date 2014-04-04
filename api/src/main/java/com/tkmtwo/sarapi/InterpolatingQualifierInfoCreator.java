@@ -45,7 +45,7 @@ public class InterpolatingQualifierInfoCreator
 
   protected final Logger logger = LoggerFactory.getLogger(getClass());
   
-  private ArsTemplate template;
+  private ArsSchemaHelper schemaHelper;
   private String formName;
   private String qualifierString;
   //private InterpolatorCallback interpolatorCallback;
@@ -57,21 +57,21 @@ public class InterpolatingQualifierInfoCreator
   
   public InterpolatingQualifierInfoCreator() { ; }
 
-  public InterpolatingQualifierInfoCreator(ArsTemplate at,
+  public InterpolatingQualifierInfoCreator(ArsSchemaHelper ash,
                                            String fn,
                                            String qs) {
-    setTemplate(at);
+    setSchemaHelper(ash);
     setFormName(fn);
     setQualifierString(qs);
   }
 
 
-  public ArsTemplate getTemplate() {
-    return template;
+  public ArsSchemaHelper getSchemaHelper() {
+    return schemaHelper;
   }
-  public void setTemplate(ArsTemplate at) {
+  public void setSchemaHelper(ArsSchemaHelper ash) {
     assertNotCompiled();
-    template = at;
+    schemaHelper = ash;
   }
 
   
@@ -119,7 +119,7 @@ public class InterpolatingQualifierInfoCreator
   public void afterPropertiesSet() {
     if (isCompiled()) { return; }
     
-    checkNotNull(getTemplate(), "ArsTemplate is null.");
+    checkNotNull(getSchemaHelper(), "ArsSchemaHelper is null.");
     checkNotBlank(getFormName(), "Form name is blank.");
     checkNotBlank(getQualifierString(), "Qualifier is blank.");
 
@@ -137,7 +137,7 @@ public class InterpolatingQualifierInfoCreator
     logger.trace("Qualifier string is now {}.", qs);
 
     QualifierInfo qi =
-      getTemplate().parseQualification(getFormName(), qs);
+      getSchemaHelper().parseQualification(getFormName(), qs);
     
     return qi;
   }
@@ -168,7 +168,7 @@ public class InterpolatingQualifierInfoCreator
 
   public String toString() {
     return Objects.toStringHelper(this)
-      .add("arsUserSource", getTemplate().getUserSource())
+      .add("formName", getFormName())
       .add("qualifierString", getQualifierString())
       .toString();
   }

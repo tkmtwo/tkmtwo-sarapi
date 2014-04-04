@@ -145,7 +145,7 @@ public abstract class AbstractFormDao<T>
   public MappingQuery<T> newMappingQuery(String qs) {
     InterpolatingQualifierInfoCreator iqic = new InterpolatingQualifierInfoCreator();
     iqic.setQualifierString(qs);
-    iqic.setTemplate(getTemplate());
+    iqic.setSchemaHelper(getSchemaHelper());
     iqic.setFormName(getFormName());
     iqic.afterPropertiesSet();
     
@@ -166,7 +166,7 @@ public abstract class AbstractFormDao<T>
                                                     String fieldName) {
     InterpolatingQualifierInfoCreator iqic = new InterpolatingQualifierInfoCreator();
     iqic.setQualifierString(qs);
-    iqic.setTemplate(getTemplate());
+    iqic.setSchemaHelper(getSchemaHelper());
     iqic.setFormName(formName);
     iqic.afterPropertiesSet();
     

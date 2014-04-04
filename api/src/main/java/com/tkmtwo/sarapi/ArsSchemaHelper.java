@@ -17,6 +17,7 @@
  */
 package com.tkmtwo.sarapi;
 
+import com.bmc.arsys.api.QualifierInfo;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -106,6 +107,12 @@ public interface ArsSchemaHelper{
                         Integer fieldId,
                         String enumName)
     throws DataAccessException;
+  
+  
+  QualifierInfo parseQualification(String formName,
+                                   String qs)
+    throws DataAccessException;
+
 
 
 }

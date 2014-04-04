@@ -23,6 +23,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.bmc.arsys.api.Constants;
 import com.bmc.arsys.api.EnumItem;
 import com.bmc.arsys.api.Field;
+import com.bmc.arsys.api.QualifierInfo;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.tkmtwo.sarapi.support.FieldUtil;
@@ -366,5 +367,12 @@ public class InMemorySchemaHelper
   
   
   
+  
+  public QualifierInfo parseQualification(String formName,
+                                          String qs)
+    throws DataAccessException {
+    return getTemplate().parseQualification(formName, qs);
+  }
+  
+  
 }
-
