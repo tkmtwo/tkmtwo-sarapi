@@ -40,85 +40,12 @@ import org.springframework.beans.factory.InitializingBean;
  * @author Tom Mahaffey
  */
 public final class BasicArsUserSource
-  implements ArsUserSource, FactoryBean, InitializingBean, DisposableBean {
-
-  private static final Logger logger = LoggerFactory.getLogger(BasicArsUserSource.class);
-
-  private ObjectPool<ARServerUser> userPool;
-  
-  private String arsEnvironmentName;
-  private List<ArsContext> arsContexts;
-  
-  private String userName;
-  private String userPassword;
-
-  private String locale;
-  private String timeZone;
-  private String customDateFormat;
-  private String customTimeFormat;
-
-  private String impersonatedUser;
-
-
-  /*
-  public ArsContext getArsContext() {
-    return this.arsContext;
-  }
-  public void setArsContext(ArsContext ac) {
-    arsContexts = new ArrayList<ArsContext>();
-    arsContexts.add(ac);
-  }
-  */
-  public String getArsEnvironmentName() { return arsEnvironmentName; }
-  public void setArsEnvironmentName(String s) { arsEnvironmentName = s; }
-
-
-  
-
-  public List<ArsContext> getArsContexts() {
-    if (arsContexts == null) {
-      arsContexts = new ArrayList<ArsContext>();
-    }
-    
-    return arsContexts;
-  }
-  public List<String> getArsContextHostNames() {
-    List<String> l = new ArrayList<String>();
-    for (ArsContext arsContext : getArsContexts()) {
-      l.add(arsContext.getHostName());
-    }
-    return l;
-  }
-    
-  public void setArsContexts(List<ArsContext> l) { arsContexts = l; }
-  
-  
-  public String getUserName() { return userName; }
-  public void setUserName(String s) { userName = s; }
-  private String getUserPassword() { return userPassword; }
-  public void setUserPassword(String s) { userPassword = s; }
-
-
-  public String getLocale() { return locale; }
-  public void setLocale(String s) { locale = s; }
-  public String getTimeZone() { return timeZone; }
-  public void setTimeZone(String s) { timeZone = s; }
-  public String getCustomDateFormat() { return customDateFormat; }
-  public void setCustomDateFormat(String s) { customDateFormat = s; }
-  
-  public String getCustomTimeFormat() { return customTimeFormat; }
-  public void setCustomTimeFormat(String s) { customTimeFormat = s; }
-  
-  
-  
-  public String getImpersonatedUser() { return impersonatedUser; }
-  public void setImpersonatedUser(String s) { impersonatedUser = s; }
-  
+  extends AbstractArsUserSource {
   
   public ARServerUser getARServerUser() {
     ARServerUser arsu = null;
     try {
-      arsu = userPool.borrowObject();
+      arsu = getUserPool().borrowObject();
     } catch (Exception ex) {
       arsu = null;
       throw new CannotGetARServerUserException("While borrowing from pool...", ex);
@@ -128,113 +55,12 @@ public final class BasicArsUserSource
   public void releaseARServerUser(ARServerUser arsu) {
     if (arsu != null) {
       try {
-        userPool.returnObject(arsu);
+        getUserPool().returnObject(arsu);
       } catch (Exception ex) {
         throw new CannotGetARServerUserException("While returning to pool...", ex);
       }
     }
   }
   
-
   
-  
-  
-  
-
-  /**
-   * @see InitializingBean#afterPropertiesSet()
-   */
-  @Override
-  public void afterPropertiesSet() {
-    //Assert.isTrue(!getArsContexts().isEmpty(), "Need some ArsContexts.");
-    checkState(!getArsContexts().isEmpty(), "Need some ArsContexts.");
-
-    /*
-    if (StringUtils.isBlank(getArsEnvironmentName())) {
-      setArsEnvironmentName(StringUtils.join(getArsContextHostNames(), ','));
-    }
-    */
-    /*
-    if (MoreConditions.isBlank(getArsEnvironmentName())) {
-      setArsEnvironmentName(Joiner.on(",").join(getArsContextHostNames()));
-    }
-    */
-    if (getArsEnvironmentName() == null) {
-      setArsEnvironmentName(Joiner.on(",").join(getArsContextHostNames()));
-    }
-
-    logger.debug("Creating ARServerUserFactory.");
-
-    userPool =
-      new StackObjectPool<ARServerUser>(new ARServerUserFactory(getArsEnvironmentName(),
-                                                                getArsContexts(),
-                                                                getUserName(),
-                                                                getUserPassword(),
-                                                                getLocale(),
-                                                                getTimeZone(),
-                                                                getCustomDateFormat(),
-                                                                getCustomTimeFormat(),
-                                                                getImpersonatedUser()));
-  }
-  
-
-  /**
-   * @see FactoryBean#getObject()
-   */
-  @Override
-  public Object getObject() {
-    //return this.arsUserSource;
-    return this;
-  }
-  
-  
-  
-  /**
-   * @see FactoryBean#getObjectType()
-   */
-  @Override
-  public Class getObjectType() {
-    return ArsUserSource.class;
-  }
-  
-  
-  
-  /**
-   * @see FactoryBean#isSingleton()
-   */
-  public boolean isSingleton() {
-    return true;
-  }
-  
-  
-  
-  
-  
-  
-  
-  /**
-   * @see DisposableBean#destroy()
-   */
-  @Override
-  public void destroy() {
-    logger.debug("Closing BasicArsUserSource.");
-  }
-
-
-  @Override
-  public String toString() {
-    return Objects.toStringHelper(this)
-      .add("arsEnvironmentName", getArsEnvironmentName())
-      .add("userName", getUserName())
-      .add("impersonatedUser", getImpersonatedUser())
-      .add("locale", getLocale())
-      .add("timeZone", getTimeZone())
-      .add("customDateFormat", getCustomDateFormat())
-      .add("customTimeFormat", getCustomTimeFormat())
-      .toString();
-  }
-
-
 }
-
-

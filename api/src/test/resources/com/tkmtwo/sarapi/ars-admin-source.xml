@@ -16,9 +16,14 @@
   </bean>
   <bean id="arsSecureSource"
         class="com.tkmtwo.sarapi.security.SecureArsUserSource">
+    <property name="arsContexts" ref="arsContexts" />
+    <property name="userName" value="${ars.uname.0}" />
+    <property name="userPassword" value="${ars.passwd.0}" />
+    <!--
     <property name="arsUserSource">
       <ref bean="arsAdminSource" />
     </property>
+    -->
   </bean>
   
   <bean id="arsAdminTemplate" class="com.tkmtwo.sarapi.ArsTemplate">

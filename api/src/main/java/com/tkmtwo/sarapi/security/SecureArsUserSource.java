@@ -19,7 +19,9 @@ package com.tkmtwo.sarapi.security;
 
 import com.bmc.arsys.api.ARException;
 import com.bmc.arsys.api.ARServerUser;
+import com.tkmtwo.sarapi.CannotGetARServerUserException;
 import com.tkmtwo.sarapi.CannotImpersonateARServerUserException;
+import com.tkmtwo.sarapi.AbstractArsUserSource;
 import com.tkmtwo.sarapi.ArsUserSource;
 import com.tkmtwo.sarapi.support.ARExceptions;
 import org.slf4j.Logger;
@@ -46,49 +48,7 @@ import org.springframework.util.Assert;
  * @version 1.0
  */
 public class SecureArsUserSource
-  implements ArsUserSource,
-             FactoryBean, InitializingBean, DisposableBean {
-
-  protected final Logger logger = LoggerFactory.getLogger(getClass());
-  protected ArsUserSource arsUserSource;
-  
-  
-  
-  
-  /**
-   * Gets the underlying <code>ArsUserSource</code>.
-   *
-   * @return an <code>ArsUserSource</code> value
-   */
-  public ArsUserSource getArsUserSource() {
-    return this.arsUserSource;
-  }
-  
-  
-  /**
-   * Sets the underlying <code>ArsUserSource</code>.
-   *
-   * The underlying source should have ARS administrative credentials.
-   * 
-   *
-   * @param aus an <code>ArsUserSource</code> value
-   */
-  public void setArsUserSource(ArsUserSource aus) {
-    this.arsUserSource = aus;
-  }
-  
-  
-  public String getArsEnvironmentName() {
-    return this.arsUserSource.getArsEnvironmentName();
-  }
-
-  /*
-  public ArsContext getArsContext()
-  {
-    return this.arsUserSource.getArsContext();
-  }
-  */
-
+  extends AbstractArsUserSource {
 
   /**
    * Gets an <code>ARServerUser</code>.
@@ -128,17 +88,14 @@ public class SecureArsUserSource
       authUserName = principal.toString();
     }
     
-    logger.debug("Authenticated username is {}.", authUserName);
-    
-    ARServerUser arsu = arsUserSource.getARServerUser();
-    
-    logger.debug("Setting impersonated user on ARServerUser {} to {}.",
-                 arsu.getUser(),
-                 authUserName);
-    
+    logger.trace("Authenticated username is {}.", authUserName);
+
+    ////
+    ARServerUser arsu = null;
     try {
+      arsu = getUserPool().borrowObject();
       arsu.impersonateUser(authUserName);
-      //arsu.verifyUser();
+
     } catch (ARException arex) {
       if (ARExceptions.hasStatusInfoMessageNum(arex, 623L)) {
         logger.warn("Could not set impersonated user on ARServerUser {} to {}. "
@@ -155,9 +112,11 @@ public class SecureArsUserSource
                                                          + " under SecureArsUserSource.  ",
                                                          arex);
       } else {
-        throw new CannotImpersonateARServerUserException("While impersonating ...", arex);
+        throw new CannotGetARServerUserException("While borrowing from pool...", arex);
       }
       
+    } catch (Exception ex) {
+      throw new CannotGetARServerUserException("While borrowing from pool...", ex);
     }
     
     return arsu;
@@ -165,47 +124,16 @@ public class SecureArsUserSource
   
   
   public void releaseARServerUser(ARServerUser arsu) {
-    arsUserSource.releaseARServerUser(arsu);
-  }  
-  
-  
-  
-  
-  
-  /**
-   * @see org.springframework.beans.factory.InitializingBean
-   */
-  public void afterPropertiesSet() {
-    Assert.notNull(arsUserSource, "Need a plain ArsUserSource.");
-  }
-  
-  
-  /**
-   * @see org.springframework.beans.factory.FactoryBean
-   */
-  public Object getObject() {
-    return this;
-  }
-  
-  /**
-   * @see org.springframework.beans.factory.FactoryBean
-   */
-  public Class getObjectType() {
-    return SecureArsUserSource.class;
-  }
-  
-  /**
-   * @see org.springframework.beans.factory.FactoryBean
-   */
-  public boolean isSingleton() {
-    return true;
-  }
-  
-  /**
-   * @see org.springframework.beans.factory.DisposableBean
-   */
-  public void destroy() {
-    logger.info("Closing SecureArsUserSource.");
+    if (arsu != null) { return; }
+    
+    try {
+      arsu.impersonateUser(null);
+      getUserPool().returnObject(arsu);
+    } catch (ARException arex) {
+      throw new CannotImpersonateARServerUserException("While un-impersonating ...", arex);
+    } catch (Exception ex) {
+      throw new CannotGetARServerUserException("While returning to pool...", ex);
+    }
   }
   
   
