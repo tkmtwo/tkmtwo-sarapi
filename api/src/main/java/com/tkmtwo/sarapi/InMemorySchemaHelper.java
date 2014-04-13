@@ -20,9 +20,11 @@ package com.tkmtwo.sarapi;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.bmc.arsys.api.CharacterFieldLimit;
 import com.bmc.arsys.api.Constants;
 import com.bmc.arsys.api.EnumItem;
 import com.bmc.arsys.api.Field;
+import com.bmc.arsys.api.FieldLimit;
 import com.bmc.arsys.api.QualifierInfo;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
@@ -134,6 +136,43 @@ public class InMemorySchemaHelper
     }
     return i;
   }
+  
+  
+  
+  
+  
+  public ArsField getField(String formName,
+                           String fieldName,
+                           ArsDataType requiredType)
+    throws DataAccessException {
+    
+    checkNotNull(requiredType, "Need a required ArsDataType");
+    ArsField arsField = getField(formName, fieldName);
+    if (requiredType != arsField.getDataType()) {
+      throw new InvalidDataAccessResourceUsageException(String.format("Field %s.%s is not a %s field.",
+                                                                      formName, fieldName,
+                                                                      requiredType.toString()));
+    }
+    return arsField;
+  }
+
+
+  public ArsField getField(String formName,
+                           Integer fieldId,
+                           ArsDataType requiredType)
+    throws DataAccessException {
+    
+    checkNotNull(requiredType, "Need a required ArsDataType");
+    ArsField arsField = getField(formName, fieldId);
+    if (requiredType != arsField.getDataType()) {
+      throw new InvalidDataAccessResourceUsageException(String.format("Field %s.%s is not a %s field.",
+                                                                      formName, String.valueOf(fieldId),
+                                                                      requiredType.toString()));
+    }
+    return arsField;
+  }
+
+
   public ArsField getField(String formName,
                            String fieldName)
     throws DataAccessException {
@@ -373,6 +412,36 @@ public class InMemorySchemaHelper
     throws DataAccessException {
     return getTemplate().parseQualification(formName, qs);
   }
+  
+  
+  
+  
+  
+  public int getMaxLength(String formName,
+                          String fieldName)
+    throws DataAccessException {
+    
+    ArsField arsField = getField(formName, fieldName, ArsDataType.CHAR);
+    return getMaxLengthCharacter(arsField.getArField());
+  }
+  
+  public int getMaxLength(String formName,
+                          Integer fieldId)
+  throws DataAccessException {
+    ArsField arsField = getField(formName, fieldId, ArsDataType.CHAR);
+    return getMaxLengthCharacter(arsField.getArField());
+  }
+
+  private int getMaxLengthCharacter(Field field) {
+    FieldLimit fl = field.getFieldLimit();
+    if (!(fl instanceof CharacterFieldLimit)) {
+      throw new InvalidDataAccessResourceUsageException("FieldLimit is not a CharacterFieldLimit");
+    }
+
+    CharacterFieldLimit cfl = (CharacterFieldLimit) fl;
+    return cfl.getMaxLength();
+  }
+
   
   
 }

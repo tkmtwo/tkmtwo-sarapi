@@ -12,6 +12,7 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.annotation.Repeat;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 
 
 @ContextConfiguration
@@ -42,7 +43,7 @@ public final class InMemorySchemaHelperTest
   
 
   
-  //@Test
+  @Test
   public void testBind() {
     String[] ss = new String[] {
       "Integer Field",
@@ -65,11 +66,21 @@ public final class InMemorySchemaHelperTest
       System.out.println("I see field: " + af.toString());
     }
     
+    assertEquals(255, arsSchemaHelper.getMaxLength("SARAPI:TestFields", "Character Field"));
+
+  }
+
+
+  @Test(expected = InvalidDataAccessResourceUsageException.class)
+  public void testError() {
+    assertEquals(255, arsSchemaHelper.getMaxLength("SARAPI:TestFields", "Integer Field"));
   }
 
   @Test
   public void testHPD() {
     arsSchemaHelper.getField("HPD:Help Desk", "Incident Number");
   }
+  
+
 
 }

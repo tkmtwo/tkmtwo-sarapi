@@ -112,7 +112,14 @@ public interface ArsSchemaHelper{
   QualifierInfo parseQualification(String formName,
                                    String qs)
     throws DataAccessException;
-
-
+  
+  
+  
+  int getMaxLength(String formName,
+                   String fieldName)
+    throws DataAccessException;
+  int getMaxLength(String formName,
+                   Integer fieldId)
+    throws DataAccessException;
 
 }
