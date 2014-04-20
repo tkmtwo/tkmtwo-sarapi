@@ -2,17 +2,19 @@ package com.tkmtwo.sarapi;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.test.annotation.Repeat;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-import org.springframework.dao.InvalidDataAccessResourceUsageException;
 
 
 @ContextConfiguration
@@ -24,7 +26,7 @@ public final class InMemorySchemaHelperTest
   protected ArsSchemaHelper arsSchemaHelper;
 
 
-  //@Test
+  @Test
   public void testUserFormLookup()
     throws Exception
   {
@@ -39,6 +41,12 @@ public final class InMemorySchemaHelperTest
 
     assertEquals(Integer.valueOf(0), arsSchemaHelper.getEnumNumber(formName, fieldName, "Current"));
     assertEquals(Integer.valueOf(1), arsSchemaHelper.getEnumNumber(formName, fieldName, "Disabled"));
+    
+    List<String> statusValues = arsSchemaHelper.getEnumNames(formName, "Status");
+    assertNotNull(statusValues);
+    assertEquals(2, statusValues.size());
+    assertTrue(statusValues.contains("Current"));
+    assertTrue(statusValues.contains("Disabled"));
   }
   
 

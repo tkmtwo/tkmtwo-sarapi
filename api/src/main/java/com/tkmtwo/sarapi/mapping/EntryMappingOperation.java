@@ -39,7 +39,12 @@ public class EntryMappingOperation<T>
   
   public List<EntryHandler> getEntryHandlers() { return entryHandlers; }
   public void setEntryHandlers(List<EntryHandler> l) { entryHandlers = ImmutableList.copyOf(l); }
-  
+  public void addEntryHandler(EntryHandler eh) {
+    ImmutableList.Builder<EntryHandler> ilb = new ImmutableList.Builder<EntryHandler>()
+      .addAll(getEntryHandlers())
+      .add(eh);
+    entryHandlers = ilb.build();
+  }
   
   
   public void afterPropertiesSet() {

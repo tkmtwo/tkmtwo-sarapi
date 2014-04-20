@@ -121,5 +121,17 @@ public interface ArsSchemaHelper{
   int getMaxLength(String formName,
                    Integer fieldId)
     throws DataAccessException;
-
+  
+  
+  
+  List<String> getEnumNames(String formName,
+                            String fieldName)
+    throws DataAccessException;
+  List<String> getEnumNames(String formName,
+                            Integer fieldId)
+    throws DataAccessException;
+  
+  
+  
+  
 }

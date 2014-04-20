@@ -53,8 +53,8 @@ dependencies {
 uploadArchives {
   repositories {
     mavenDeployer {
-      repository(url: "file://$buildDir/repo")
-      //repository(url: "file:///C:/gits/tkmtwo-mvn-repo/release")
+      //repository(url: "file://$buildDir/repo")
+      repository(url: "file:///C:/gits/tkmtwo-mvn-repo/release")
     }
   }
 }

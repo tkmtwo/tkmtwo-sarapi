@@ -139,8 +139,25 @@ public abstract class AbstractFormDao<T>
     
     return getGetEntry().getEntry(entryId);
   }
-
-
+  
+  public T mergeOrSet(T objectSource)
+    throws DataAccessException {
+    Entry entry = getEntryMapper().mapObject(objectSource);
+    String entryId = entry.getEntryId();
+    if (entryId == null) {
+      entryId = getMergeEntry().mergeEntry(entry);
+    } else {
+      getSetEntry().setEntry(entry);
+    }
+    return getGetEntry().getEntry(entryId);
+  }
+  
+  public T merge(T objectSource)
+    throws DataAccessException {
+    Entry entry = getEntryMapper().mapObject(objectSource);
+    String entryId = getMergeEntry().mergeEntry(entry);
+    return getGetEntry().getEntry(entryId);
+  }
 
   public MappingQuery<T> newMappingQuery(String qs) {
     InterpolatingQualifierInfoCreator iqic = new InterpolatingQualifierInfoCreator();

@@ -441,6 +441,35 @@ public class InMemorySchemaHelper
     CharacterFieldLimit cfl = (CharacterFieldLimit) fl;
     return cfl.getMaxLength();
   }
+  
+  
+  
+  
+  
+
+  public List<String> getEnumNames(String formName,
+                                   String fieldName)
+    throws DataAccessException {
+    
+    return getEnumNames(formName, getField(formName, fieldName).getId());
+  }
+
+    
+  public List<String> getEnumNames(String formName,
+                                   Integer fieldId)
+    throws DataAccessException {
+    
+    ArsField arsField = getField(formName, fieldId);
+    if (!arsField.getDataType().equals(ArsDataType.ENUM)) {
+      throw new InvalidDataAccessResourceUsageException(String.format("Field %s.%s is not an ENUM type",
+                                                                      formName, fieldId.toString()));
+    }
+    
+    List<String> enumNames = ImmutableList.copyOf(arsField.getEnums().values());
+    return enumNames;
+  }
+
+
 
   
   
