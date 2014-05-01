@@ -18,6 +18,7 @@
 package com.tkmtwo.sarapi.support;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.bmc.arsys.api.AttachmentValue;
 import com.bmc.arsys.api.CurrencyValue;
@@ -797,7 +798,30 @@ public final class EntryUtil {
   }
   
   
+  public static void removeNullValues(Entry entry) {
+    checkNotNull(entry, "Need an entry");
+    for (Map.Entry<Integer, Value> me : entry.entrySet()) {
+      if (me.getValue().getValue() == null) {
+        logger.trace("Removing Entry entry with field id '{}'", me.getKey());
+        entry.remove(me.getKey());
+      }
+    }
+  }
   
+  
+  public static void removeNullValues(Entry entry, List<Integer> fieldIds) {
+    checkNotNull(entry, "Need an entry");
+    checkNotNull(fieldIds, "Need some field ids");
+
+    for (Map.Entry<Integer, Value> me : entry.entrySet()) {
+      if (fieldIds.contains(me.getKey())
+          && me.getValue().getValue() == null) {
+        logger.trace("Removing Entry entry with field id '{}'", me.getKey());
+        entry.remove(me.getKey());
+      }
+    }
+    
+  }
   
 }
 
