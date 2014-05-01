@@ -92,7 +92,8 @@ public class MappingSetEntry<T>
     super.afterPropertiesSet();
     if (getEntryHandlers() == null) {
       logger.info("No EntryHandlers found, adding FieldIdRemovingEntryHandler.CORE_SET_ENTRY");
-      List<EntryHandler> l = ImmutableList.of((EntryHandler) FieldIdRemovingEntryHandler.CORE_SET_ENTRY);
+      List<EntryHandler> l = ImmutableList.of((EntryHandler) FieldIdRemovingEntryHandler.CORE_SET_ENTRY,
+                                              (EntryHandler) NullRemovingEntryHandler.ALL);
       setEntryHandlers(l);
     }
   }

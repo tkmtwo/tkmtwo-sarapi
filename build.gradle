@@ -6,6 +6,6 @@ subprojects {
   }
   
   group = 'com.tkmtwo'
-  version = '0.5.7'
+  version = '0.5.8'
   
 }

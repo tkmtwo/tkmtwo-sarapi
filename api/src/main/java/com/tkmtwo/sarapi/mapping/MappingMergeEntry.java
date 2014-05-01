@@ -66,7 +66,8 @@ public class MappingMergeEntry<T>
     super.afterPropertiesSet();
     if (getEntryHandlers() == null) {
       logger.info("No EntryHandlers found, adding FieldIdRemovingEntryHandler.CORE_MERGE_ENTRY");
-      List<EntryHandler> l = ImmutableList.of((EntryHandler) FieldIdRemovingEntryHandler.CORE_MERGE_ENTRY);
+      List<EntryHandler> l = ImmutableList.of((EntryHandler) FieldIdRemovingEntryHandler.CORE_MERGE_ENTRY,
+                                              (EntryHandler) NullRemovingEntryHandler.ALL);
       setEntryHandlers(l);
     }
   }

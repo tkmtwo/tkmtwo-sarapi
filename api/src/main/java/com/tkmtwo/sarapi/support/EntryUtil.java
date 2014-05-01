@@ -33,6 +33,7 @@ import com.tkmtwo.sarapi.ArsSchemaHelper;
 import com.tkmtwo.sarapi.InvalidEntryAccessException;
 import com.tkmtwo.sarapi.InvalidValueAccessException;
 import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.joda.time.DateTime;
@@ -796,14 +797,28 @@ public final class EntryUtil {
     
     return entry;
   }
-  
-  
+
+
+  /*  
+  public void nothing() {
+    Iterator<Map.Entry<String,String>> iter = TestMap.entrySet().iterator();
+    while (iter.hasNext()) {
+      Map.Entry<String,String> entry = iter.next();
+      if("Sample".equalsIgnoreCase(entry.getValue())){
+        iter.remove();
+      }
+    }
+  }
+  */
+
   public static void removeNullValues(Entry entry) {
     checkNotNull(entry, "Need an entry");
-    for (Map.Entry<Integer, Value> me : entry.entrySet()) {
+    Iterator<Map.Entry<Integer, Value>> iterator = entry.entrySet().iterator();
+    while (iterator.hasNext()) {
+      Map.Entry<Integer, Value> me = iterator.next();
       if (me.getValue().getValue() == null) {
         logger.trace("Removing Entry entry with field id '{}'", me.getKey());
-        entry.remove(me.getKey());
+        iterator.remove();
       }
     }
   }
@@ -812,16 +827,18 @@ public final class EntryUtil {
   public static void removeNullValues(Entry entry, List<Integer> fieldIds) {
     checkNotNull(entry, "Need an entry");
     checkNotNull(fieldIds, "Need some field ids");
-
-    for (Map.Entry<Integer, Value> me : entry.entrySet()) {
+    
+    Iterator<Map.Entry<Integer, Value>> iterator = entry.entrySet().iterator();
+    while (iterator.hasNext()) {
+      Map.Entry<Integer, Value> me = iterator.next();
       if (fieldIds.contains(me.getKey())
           && me.getValue().getValue() == null) {
         logger.trace("Removing Entry entry with field id '{}'", me.getKey());
-        entry.remove(me.getKey());
+        iterator.remove();
       }
     }
-    
   }
+  
   
 }
 

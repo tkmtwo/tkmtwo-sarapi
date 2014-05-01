@@ -23,12 +23,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.bmc.arsys.api.Constants;
 import com.bmc.arsys.api.Entry;
 import com.google.common.collect.ImmutableList;
+import com.tkmtwo.sarapi.ArsSchemaHelper;
+import com.tkmtwo.sarapi.ArsTemplate;
+import com.tkmtwo.sarapi.convert.ArsConversionService;
 import com.tkmtwo.sarapi.support.EntryUtil;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.core.convert.ConversionService;
 
 
 /**
@@ -42,6 +46,85 @@ public class NullRemovingEntryHandler
 
   private List<String> fieldNames;
   private List<Integer> fieldIds;
+  
+  public static final NullRemovingEntryHandler ALL = NullRemovingEntryHandler.of();
+  
+  public NullRemovingEntryHandler() { }
+  
+  public NullRemovingEntryHandler(FormMappingOperation fmo) {
+    setTemplate(fmo.getTemplate());
+    setConversionService(fmo.getConversionService());
+    setSchemaHelper(fmo.getSchemaHelper());
+    setFormName(fmo.getFormName());
+  }
+  public NullRemovingEntryHandler(FormMappingOperation fmo,
+                                  List<String> fns) {
+    this(fmo);
+    setFieldNames(fns);
+  }
+  
+  public NullRemovingEntryHandler(ArsTemplate at,
+                                  ConversionService cs,
+                                  ArsSchemaHelper ash,
+                                  String fn) {
+    setTemplate(at);
+    setConversionService(cs);
+    setSchemaHelper(ash);
+    setFormName(fn);
+  }
+  public NullRemovingEntryHandler(ArsTemplate at,
+                                  ConversionService cs,
+                                  ArsSchemaHelper ash,
+                                  String fn,
+                                  List<String> fns) {
+    this(at, cs, ash, fn);
+    setFieldNames(fns);
+  }
+  
+  public static NullRemovingEntryHandler of() {
+    NullRemovingEntryHandler nreh = new NullRemovingEntryHandler();
+    nreh.afterPropertiesSet();
+    return nreh;
+  }
+  public static NullRemovingEntryHandler of(List<Integer> fids) {
+    NullRemovingEntryHandler nreh = new NullRemovingEntryHandler();
+    nreh.setFieldIds(fids);
+    nreh.afterPropertiesSet();
+    return nreh;
+  }
+  
+  public static NullRemovingEntryHandler of(FormMappingOperation fmo) {
+    NullRemovingEntryHandler nreh = new NullRemovingEntryHandler(fmo);
+    nreh.afterPropertiesSet();
+    return nreh;
+  }
+  
+  public static NullRemovingEntryHandler of(FormMappingOperation fmo,
+                                            List<String> fns) {
+    NullRemovingEntryHandler nreh = new NullRemovingEntryHandler(fmo, fns);
+    nreh.afterPropertiesSet();
+    return nreh;
+  }
+  
+  public static NullRemovingEntryHandler of(ArsTemplate at,
+                                            ConversionService cs,
+                                            ArsSchemaHelper ash,
+                                            String fn) {
+    NullRemovingEntryHandler nreh = new NullRemovingEntryHandler(at, cs, ash, fn);
+    nreh.afterPropertiesSet();
+    return nreh;
+  }
+  public static NullRemovingEntryHandler of(ArsTemplate at,
+                                            ConversionService cs,
+                                            ArsSchemaHelper ash,
+                                            String fn,
+                                            List<String> fns) {
+    NullRemovingEntryHandler nreh = new NullRemovingEntryHandler(at, cs, ash, fn, fns);
+    nreh.afterPropertiesSet();
+    return nreh;
+  }
+    
+    
 
   
   public List<String> getFieldNames() {
@@ -86,6 +169,10 @@ public class NullRemovingEntryHandler
 
   
   public void afterPropertiesSet() {
+    if (getFieldNames().isEmpty()) {
+      return;
+    }
+
     super.afterPropertiesSet();
     
     ImmutableList.Builder<Integer> ilb = new ImmutableList.Builder<Integer>();
