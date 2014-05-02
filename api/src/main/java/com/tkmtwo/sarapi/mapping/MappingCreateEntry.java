@@ -52,9 +52,11 @@ public class MappingCreateEntry<T>
   public void afterPropertiesSet() {
     super.afterPropertiesSet();
     if (getEntryHandlers() == null) {
-      logger.info("No EntryHandlers found, adding FieldIdRemovingEntryHandler.CORE_CREATE_ENTRY");
+      logger.info("No EntryHandlers found, adding default handlers.");
       setEntryHandlers(ImmutableList.of((EntryHandler) FieldIdRemovingEntryHandler.CORE_CREATE_ENTRY,
+                                        (EntryHandler) BlankCharRemovingEntryHandler.ALL,
                                         (EntryHandler) NullRemovingEntryHandler.ALL));
+
     }
   }
   

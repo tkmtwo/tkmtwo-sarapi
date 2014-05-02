@@ -19,6 +19,7 @@ package com.tkmtwo.sarapi.support;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.MoreConditions.isBlank;
 
 import com.bmc.arsys.api.AttachmentValue;
 import com.bmc.arsys.api.CurrencyValue;
@@ -823,7 +824,6 @@ public final class EntryUtil {
     }
   }
   
-  
   public static void removeNullValues(Entry entry, List<Integer> fieldIds) {
     checkNotNull(entry, "Need an entry");
     checkNotNull(fieldIds, "Need some field ids");
@@ -840,5 +840,41 @@ public final class EntryUtil {
   }
   
   
+  public static void removeBlankCharValues(Entry entry) {
+    checkNotNull(entry, "Need an entry");
+    Iterator<Map.Entry<Integer, Value>> iterator = entry.entrySet().iterator();
+    while (iterator.hasNext()) {
+      Map.Entry<Integer, Value> me = iterator.next();
+      if (DataType.CHAR.equals(me.getValue().getDataType())) {
+        String stringValue = (String) me.getValue().getValue();
+        if (isBlank(stringValue)) {
+          logger.trace("Removing Entry entry with field id '{}'", me.getKey());
+          iterator.remove();
+        }
+      }
+    }
+  }
+  
+  public static void removeBlankCharValues(Entry entry, List<Integer> fieldIds) {
+    checkNotNull(entry, "Need an entry");
+    checkNotNull(fieldIds, "Need some field ids");
+    
+    Iterator<Map.Entry<Integer, Value>> iterator = entry.entrySet().iterator();
+    while (iterator.hasNext()) {
+      Map.Entry<Integer, Value> me = iterator.next();
+      if (DataType.CHAR.equals(me.getValue().getDataType())) {
+        String stringValue = (String) me.getValue().getValue();
+        if (fieldIds.contains(me.getKey())
+            && isBlank(stringValue)) {
+          logger.trace("Removing Entry entry with field id '{}'", me.getKey());
+          iterator.remove();
+        }
+      }
+    }
+  }
+  
+  
+  
+  
+  
 }
-
